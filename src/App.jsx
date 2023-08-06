@@ -21,13 +21,20 @@ function App() {
 	)
 
 	useEffect(() => {
-		apiTesting()
+		fetchApiConfig()
 	}, [])
-	const apiTesting = () => {
-		fetchDataFromApi("movie/popular")
+	const fetchApiConfig = () => {
+		fetchDataFromApi("configuration")
 			.then((response) => {
 				console.log(response);
-				dispatch(getApiConfiguration(response))
+
+				const url = {
+					backdrop: response.images.secure_base_url + "original",
+					poster: response.images.secure_base_url + "original",
+					profile: response.images.secure_base_url + "original",
+				}
+
+				dispatch(getApiConfiguration(url))
 			})
 			.catch(error => { console.log(error); })
 	}
@@ -40,7 +47,7 @@ function App() {
 			<Route exact path="/explore/:mediaType" element={<Explore />} />
 			<Route exact path="*" element={<PageNotFound />} />
 		</Routes>
-		<Footer />
+		{/* <Footer /> */}
 	</BrowserRouter>;
 }
 
